@@ -1,0 +1,21 @@
+{ 
+	"name": "upstream",
+	"description": "Easy folder backups to S3.",
+	"author": "Dave Winer <dave@smallpicture.com>",
+	"version": "0.40.0",
+	"scripts": {
+		"start": "node upstream.js"
+		},
+	"repository": {
+		"type" : "git",
+		"url" : "https://github.com/scripting/upstreamer.git"
+		},
+	"dependencies" : {
+		"mime": "*",
+		"aws-sdk": "*" 
+		}, 
+	"license": "MIT",
+	"engines": { 
+		"node": "0.10.*"
+		}
+	}

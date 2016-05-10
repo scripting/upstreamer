@@ -1,0 +1,29 @@
+<?xml encoding="ISO-8859-1" version="1.0"?>
+<opml version="2.0">
+	<head>
+		<title>lib/s3.js</title>
+		<dateModified>&lt;%dateModified%></dateModified>
+		<expansionState></expansionState>
+		<vertScrollState>1</vertScrollState>
+		<windowTop>300</windowTop>
+		<windowLeft>700</windowLeft>
+		<windowBottom>900</windowBottom>
+		<windowRight>1500</windowRight>
+		</head>
+	<body text="lib/s3.js">
+		<outline text="var AWS = require (&quot;aws-sdk&quot;);"></outline>
+		<outline text="var s3 = new AWS.S3 ();"></outline>
+		<outline text=""></outline>
+		<outline text="exports.stats = s3stats;"></outline>
+		<outline text="exports.defaultType = s3defaultType;"></outline>
+		<outline text="exports.defaultAcl = s3defaultAcl;"></outline>
+		<outline text="exports.splitPath = s3SplitPath;"></outline>
+		<outline text="exports.newObject = s3NewObject;"></outline>
+		<outline text="exports.redirect = s3Redirect;"></outline>
+		<outline text="exports.getObjectMetadata = s3GetObjectMetadata;"></outline>
+		<outline text="exports.getObject = s3GetObject;"></outline>
+		<outline text="exports.listObjects = s3ListObjects;"></outline>
+		<outline text=""></outline>
+		<outline created="Sat, 26 Apr 2014 23:28:41 GMT" pgfnum="40498" text="[[http://fargo.io/code/node/shared/s3.js]]"></outline>
+		</body>
+	</opml>

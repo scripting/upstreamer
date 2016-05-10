@@ -1,0 +1,24 @@
+<?xml encoding="ISO-8859-1" version="1.0"?>
+<opml version="2.0">
+	<head>
+		<title>lib/filesystem.js</title>
+		<dateModified>&lt;%dateModified%></dateModified>
+		<expansionState></expansionState>
+		<vertScrollState>1</vertScrollState>
+		<windowTop>300</windowTop>
+		<windowLeft>700</windowLeft>
+		<windowBottom>900</windowBottom>
+		<windowRight>1500</windowRight>
+		</head>
+	<body text="lib/filesystem.js">
+		<outline text="exports.deleteDirectory = fsDeleteDirectory;"></outline>
+		<outline text="exports.sureFilePath = fsSureFilePath;"></outline>
+		<outline text="exports.newObject = fsNewObject;"></outline>
+		<outline text="exports.getObject = fsGetObject;"></outline>
+		<outline text="exports.recursivelyVisitFiles = fsRecursivelyVisitFiles;"></outline>
+		<outline text=""></outline>
+		<outline text="var fs = require (&quot;fs&quot;);"></outline>
+		<outline text=""></outline>
+		<outline text="[[http://fargo.io/code/node/shared/fs.js]] "></outline>
+		</body>
+	</opml>

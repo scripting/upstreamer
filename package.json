@@ -1,5 +1,5 @@
 { 
-	"name": "upstream",
+	"name": "upstreamer",
 	"description": "Easy folder backups to S3.",
 	"author": "Dave Winer <dave@smallpicture.com>",
 	"version": "0.40.0",

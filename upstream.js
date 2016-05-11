@@ -1,4 +1,4 @@
-var myVersion = "0.40a", myProductName = "upstream"; 
+var myVersion = "0.40b", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -115,7 +115,10 @@ function loadConfig (callback) {
 			console.log ("loadConfig: err.message == " + err.message);
 			}
 		else {
-			config = JSON.parse (data.toString ());
+			var myConfig = JSON.parse (data.toString ());
+			for (var x in myConfig) {
+				config [x] = myConfig [x];
+				}
 			}
 		if (callback !== undefined) {
 			callback ();

@@ -15,25 +15,27 @@
 			<outline text="Upstreamer is a Node.js app that keeps a folder backed up on Amazon S3."></outline>
 			</outline>
 		<outline text="#### How upstreamer works">
-			<outline text="Have a servers running a set of Node apps using forever keeping them running. "></outline>
-			<outline text="Each app is in a sub-folder of the main server apps folder, where all its code and prefs/stats are stored. In some cases the user data is stored there too. "></outline>
-			<outline text="I want to keep a copy of all the files in all the sub-folders in an S3 bucket. The backups are incremental, continuously updating. "></outline>
+			<outline text="I have a server running a set of Node apps using &lt;a href=&quot;https://github.com/foreverjs/forever&quot;&gt;forever&lt;/a&gt; to keep them running. "></outline>
+			<outline text="Each app is in a sub-folder of a main folder, where all its code and prefs/stats are stored. In some cases the user data is stored there too. "></outline>
+			<outline text="I want to keep a copy of all the files in all the sub-folders in an S3 bucket. The backups are continuously updating as things change. "></outline>
 			<outline text="My copy of upstreamer is configured to do this. "></outline>
 			</outline>
 		<outline text="#### How to set up">
-			<outline text="Edit config.json and set S3path to point to the place in your S3 bucket where you want this server's backups to be stored."></outline>
-			<outline text="folder is the folder hierchy we'll scan on this machine. "></outline>
-			<outline text="ctSecsBetwScans is obviously the number of seconds between each scan. "></outline>
+			<outline text="To install:"></outline>
+			<outline text="&lt;pre&gt;npm install&lt;/pre&gt;"></outline>
+			<outline text="Edit &lt;a href=&quot;https://github.com/scripting/upstreamer/blob/master/config.json&quot;&gt;config.json&lt;/a&gt; and set &lt;i&gt;s3path&lt;/i&gt; to point to the place in your S3 bucket where you want this server's backups to be stored."></outline>
+			<outline text="&lt;i&gt;folder&lt;/i&gt; is the folder hierchy we'll scan on this machine. "></outline>
+			<outline text="&lt;i&gt;ctSecsBetwScans&lt;/i&gt; is the number of seconds between each scan. "></outline>
 			<outline text="upstream.js is the app, to run it: "></outline>
-			<outline text="&lt;code&gt;node upstream.js&lt;/code&gt;"></outline>
+			<outline text="&lt;pre&gt;node upstream.js&lt;/pre&gt;"></outline>
 			</outline>
-		<outline text="#### Updates">
+		<outline isComment="true" text="#### Updates">
 			<outline text="##### v0.41 -- 2/3/16 by DW">
 				<outline text="Say what happened."></outline>
 				</outline>
 			</outline>
 		<outline text="#### Questions, comments?">
-			<outline text="Please post a note on the Server-Snacks mail list."></outline>
+			<outline text="Please post a note on the &lt;a href=&quot;https://groups.google.com/forum/?fromgroups#!forum/server-snacks&quot;&gt;Server-Snacks mail list&lt;/a&gt;."></outline>
 			</outline>
 		</body>
 	</opml>

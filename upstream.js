@@ -1,4 +1,4 @@
-var myVersion = "0.40b", myProductName = "upstream"; 
+var myVersion = "0.40c", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 

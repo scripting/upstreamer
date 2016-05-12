@@ -11,7 +11,7 @@
 		<windowRight>1500</windowRight>
 		</head>
 	<body text="upstream.js">
-		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40c&quot;, myProductName = &quot;upstream&quot;; "></outline>
+		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40f&quot;, myProductName = &quot;upstream&quot;; "></outline>
 		<outline text=""></outline>
 		<outline text="var fs = require (&quot;fs&quot;);"></outline>
 		<outline text="var mime = require (&quot;mime&quot;); "></outline>
@@ -38,13 +38,26 @@
 			</outline>
 		<outline text="var fnameStats = &quot;stats.json&quot;, flStatsDirty = false;"></outline>
 		<outline text=""></outline>
-		<outline text=""></outline>
+		<outline text="function skipFile (f) {">
+			<outline text="if (config.namesToSkip !== undefined) {">
+				<outline text="var name = utils.stringLastField (f, &quot;/&quot;);"></outline>
+				<outline text="for (var i = 0; i &lt; config.namesToSkip.length; i++) {">
+					<outline text="if (name == config.namesToSkip [i]) {">
+						<outline text="return (true);"></outline>
+						<outline text="}"></outline>
+						</outline>
+					<outline text="}"></outline>
+					</outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="return (false);"></outline>
+			<outline text="}"></outline>
+			</outline>
 		<outline text="function getFileItemName (f) {">
 			<outline text="var name = utils.stringDelete (f, 1, config.folder.length);"></outline>
 			<outline text="return (name);"></outline>
 			<outline text="}"></outline>
 			</outline>
-		<outline text=""></outline>
 		<outline text="function uploadOneFile (f, callback) {">
 			<outline text="var item = stats.theFiles [getFileItemName (f)], whenStart = new Date ();"></outline>
 			<outline text="function getMimeType (f) { ">
@@ -82,7 +95,7 @@
 		<outline text="function watchFolder () {">
 			<outline text="var whenScanStart = new Date ();"></outline>
 			<outline text="function checkFile (f) {">
-				<outline text="if (!utils.endsWith (f, &quot;/.DS_Store&quot;)) {">
+				<outline text="if (!skipFile (f)) {">
 					<outline text="var flupload = true, whenStart = new Date (), whenModified = getFileModDate (f);"></outline>
 					<outline text="if (stats.theFiles [getFileItemName (f)] === undefined) {">
 						<outline text="stats.theFiles [getFileItemName (f)] = {">
@@ -174,6 +187,11 @@
 				</outline>
 			<outline text="}"></outline>
 			</outline>
+		<outline text="function everyMinute () {">
+			<outline text="var now = new Date ();"></outline>
+			<outline text="console.log (&quot;\neveryMinute: &quot; + now.toLocaleTimeString () + &quot;, v&quot; + myVersion);"></outline>
+			<outline text="}"></outline>
+			</outline>
 		<outline text="function everySecond () {">
 			<outline text="if (flStatsDirty) {">
 				<outline text="stats.ctSaves++;"></outline>
@@ -190,6 +208,7 @@
 				<outline text="loadStats (function () {">
 					<outline text="console.log (&quot;startup: config == &quot; + utils.jsonStringify (config));"></outline>
 					<outline text="setInterval (everySecond, 1000); "></outline>
+					<outline text="setInterval (everyMinute, 60000); "></outline>
 					<outline text="setInterval (watchFolder, config.ctSecsBetwScans * 1000); "></outline>
 					<outline text="});"></outline>
 					</outline>

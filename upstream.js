@@ -1,4 +1,4 @@
-var myVersion = "0.40c", myProductName = "upstream"; 
+var myVersion = "0.40f", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -22,12 +22,21 @@ var stats = {
 	};
 var fnameStats = "stats.json", flStatsDirty = false;
 
-
+function skipFile (f) {
+	if (config.namesToSkip !== undefined) {
+		var name = utils.stringLastField (f, "/");
+		for (var i = 0; i < config.namesToSkip.length; i++) {
+			if (name == config.namesToSkip [i]) {
+				return (true);
+				}
+			}
+		}
+	return (false);
+	}
 function getFileItemName (f) {
 	var name = utils.stringDelete (f, 1, config.folder.length);
 	return (name);
 	}
-
 function uploadOneFile (f, callback) {
 	var item = stats.theFiles [getFileItemName (f)], whenStart = new Date ();
 	function getMimeType (f) { 
@@ -58,7 +67,7 @@ function getFileModDate (f) {
 function watchFolder () {
 	var whenScanStart = new Date ();
 	function checkFile (f) {
-		if (!utils.endsWith (f, "/.DS_Store")) {
+		if (!skipFile (f)) {
 			var flupload = true, whenStart = new Date (), whenModified = getFileModDate (f);
 			if (stats.theFiles [getFileItemName (f)] === undefined) {
 				stats.theFiles [getFileItemName (f)] = {
@@ -125,6 +134,10 @@ function loadConfig (callback) {
 			}
 		});
 	}
+function everyMinute () {
+	var now = new Date ();
+	console.log ("\neveryMinute: " + now.toLocaleTimeString () + ", v" + myVersion);
+	}
 function everySecond () {
 	if (flStatsDirty) {
 		stats.ctSaves++;
@@ -139,6 +152,7 @@ function startup () {
 		loadStats (function () {
 			console.log ("startup: config == " + utils.jsonStringify (config));
 			setInterval (everySecond, 1000); 
+			setInterval (everyMinute, 60000); 
 			setInterval (watchFolder, config.ctSecsBetwScans * 1000); 
 			});
 		});

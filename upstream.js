@@ -136,7 +136,7 @@ function loadConfig (callback) {
 	}
 function everyMinute () {
 	var now = new Date ();
-	console.log ("\neveryMinute: " + now.toLocaleTimeString () + ", v" + myVersion);
+	console.log ("\neveryMinute: " + now.toLocaleTimeString () + ", v" + myVersion + "\n");
 	}
 function everySecond () {
 	if (flStatsDirty) {

@@ -189,7 +189,7 @@
 			</outline>
 		<outline text="function everyMinute () {">
 			<outline text="var now = new Date ();"></outline>
-			<outline text="console.log (&quot;\neveryMinute: &quot; + now.toLocaleTimeString () + &quot;, v&quot; + myVersion);"></outline>
+			<outline text="console.log (&quot;\neveryMinute: &quot; + now.toLocaleTimeString () + &quot;, v&quot; + myVersion + &quot;\n&quot;);"></outline>
 			<outline text="}"></outline>
 			</outline>
 		<outline text="function everySecond () {">

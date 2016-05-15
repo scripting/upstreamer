@@ -11,7 +11,7 @@
 		<windowRight>1500</windowRight>
 		</head>
 	<body text="upstream.js">
-		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40f&quot;, myProductName = &quot;upstream&quot;; "></outline>
+		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40g&quot;, myProductName = &quot;upstream&quot;; "></outline>
 		<outline text=""></outline>
 		<outline text="var fs = require (&quot;fs&quot;);"></outline>
 		<outline text="var mime = require (&quot;mime&quot;); "></outline>
@@ -30,6 +30,7 @@
 		<outline text="var stats = {">
 			<outline text="ctSaves: 0, "></outline>
 			<outline text="ctScans: 0,"></outline>
+			<outline text="ctSecsLastScan: 0,"></outline>
 			<outline text="whenLastSave: new Date (0),"></outline>
 			<outline text="theFiles: {">
 				<outline text="}"></outline>
@@ -207,6 +208,7 @@
 			<outline text="loadConfig (function () {">
 				<outline text="loadStats (function () {">
 					<outline text="console.log (&quot;startup: config == &quot; + utils.jsonStringify (config));"></outline>
+					<outline text="watchFolder (); //do a scan at startup"></outline>
 					<outline text="setInterval (everySecond, 1000); "></outline>
 					<outline text="setInterval (everyMinute, 60000); "></outline>
 					<outline text="setInterval (watchFolder, config.ctSecsBetwScans * 1000); "></outline>

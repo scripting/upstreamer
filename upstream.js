@@ -1,4 +1,4 @@
-var myVersion = "0.40f", myProductName = "upstream"; 
+var myVersion = "0.40g", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -16,6 +16,7 @@ var fnameConfig = "config.json";
 var stats = {
 	ctSaves: 0, 
 	ctScans: 0,
+	ctSecsLastScan: 0,
 	whenLastSave: new Date (0),
 	theFiles: {
 		}
@@ -151,6 +152,7 @@ function startup () {
 	loadConfig (function () {
 		loadStats (function () {
 			console.log ("startup: config == " + utils.jsonStringify (config));
+			watchFolder (); //do a scan at startup
 			setInterval (everySecond, 1000); 
 			setInterval (everyMinute, 60000); 
 			setInterval (watchFolder, config.ctSecsBetwScans * 1000); 

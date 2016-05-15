@@ -1,4 +1,4 @@
-var myVersion = "0.40i", myProductName = "upstream"; 
+var myVersion = "0.40m", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -60,8 +60,18 @@ function checkFileQueue () {
 			});
 		}
 	}
+function myStatsFullFilePath () {
+	var folder = __dirname;
+	if (folder [folder.length - 1] != "/") {
+		folder += "/";
+		}
+	return (folder + fnameStats);
+	}
 
 function skipFile (f) {
+	if (f == myStatsFullFilePath ()) { //don't upload our own stats file, it's always changing
+		return (true); 
+		}
 	if (config.namesToSkip !== undefined) {
 		var name = utils.stringLastField (f, "/");
 		for (var i = 0; i < config.namesToSkip.length; i++) {

@@ -11,7 +11,7 @@
 		<windowRight>1500</windowRight>
 		</head>
 	<body text="upstream.js">
-		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40i&quot;, myProductName = &quot;upstream&quot;; "></outline>
+		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40m&quot;, myProductName = &quot;upstream&quot;; "></outline>
 		<outline text=""></outline>
 		<outline text="var fs = require (&quot;fs&quot;);"></outline>
 		<outline text="var mime = require (&quot;mime&quot;); "></outline>
@@ -89,8 +89,30 @@
 				</outline>
 			<outline text="}"></outline>
 			</outline>
+		<outline text="function myStatsFullFilePath () {">
+			<outline text="var folder = __dirname;"></outline>
+			<outline text="if (folder [folder.length - 1] != &quot;/&quot;) {">
+				<outline text="folder += &quot;/&quot;;"></outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="return (folder + fnameStats);"></outline>
+			<outline text="}"></outline>
+			</outline>
 		<outline text=""></outline>
 		<outline text="function skipFile (f) {">
+			<outline isComment="true" text=""></outline>
+			<outline isComment="true" text="if (utils.endsWith (f, &quot;/stats.json&quot;)) {">
+				<outline text=""></outline>
+				<outline text="console.log (&quot;skipFile: f == &quot; + f + &quot;, myStatsFullFilePath () == &quot; + myStatsFullFilePath ());"></outline>
+				<outline text=""></outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline isComment="true" text=""></outline>
+			<outline isComment="true" text=""></outline>
+			<outline text="if (f == myStatsFullFilePath ()) { //don't upload our own stats file, it's always changing">
+				<outline text="return (true); "></outline>
+				<outline text="}"></outline>
+				</outline>
 			<outline text="if (config.namesToSkip !== undefined) {">
 				<outline text="var name = utils.stringLastField (f, &quot;/&quot;);"></outline>
 				<outline text="for (var i = 0; i &lt; config.namesToSkip.length; i++) {">
@@ -262,6 +284,7 @@
 			</outline>
 		<outline text="function startup () {">
 			<outline created="Mon, 03 Feb 2014 18:54:58 GMT" pgfnum="36999" text="console.log (&quot;\n&quot; + myProductName + &quot; v&quot; + myVersion + &quot;\n&quot;);"></outline>
+			<outline isComment="true" text="console.log (__dirname);"></outline>
 			<outline text="loadConfig (function () {">
 				<outline text="loadStats (function () {">
 					<outline text="console.log (&quot;startup: config == &quot; + utils.jsonStringify (config));"></outline>

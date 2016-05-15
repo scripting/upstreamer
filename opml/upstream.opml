@@ -11,7 +11,7 @@
 		<windowRight>1500</windowRight>
 		</head>
 	<body text="upstream.js">
-		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40g&quot;, myProductName = &quot;upstream&quot;; "></outline>
+		<outline created="Mon, 03 Feb 2014 03:21:03 GMT" pgfnum="36831" text="var myVersion = &quot;0.40i&quot;, myProductName = &quot;upstream&quot;; "></outline>
 		<outline text=""></outline>
 		<outline text="var fs = require (&quot;fs&quot;);"></outline>
 		<outline text="var mime = require (&quot;mime&quot;); "></outline>
@@ -32,12 +32,63 @@
 			<outline text="ctScans: 0,"></outline>
 			<outline text="ctSecsLastScan: 0,"></outline>
 			<outline text="whenLastSave: new Date (0),"></outline>
+			<outline text="fileQueue: [],"></outline>
 			<outline text="theFiles: {">
 				<outline text="}"></outline>
 				</outline>
 			<outline text="};"></outline>
 			</outline>
 		<outline text="var fnameStats = &quot;stats.json&quot;, flStatsDirty = false;"></outline>
+		<outline text="var flFileQueueBusy = false;"></outline>
+		<outline text=""></outline>
+		<outline text="function addFileToQueue (f) {">
+			<outline text="for (var i = 0; i &lt; stats.fileQueue.length; i++) { //see if it's already on the queue">
+				<outline text="if (stats.fileQueue [i].f == f) {">
+					<outline text="return;"></outline>
+					<outline text="}"></outline>
+					</outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="stats.fileQueue [stats.fileQueue.length] = {">
+				<outline text="f: f"></outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="}"></outline>
+			</outline>
+		<outline text="function emptyFileQueue (callback) {">
+			<outline text="function doNext () {">
+				<outline text="if (stats.fileQueue.length &gt; 0) {">
+					<outline text="var f = stats.fileQueue [0].f;"></outline>
+					<outline text="stats.fileQueue.splice (0, 1); //remove first item"></outline>
+					<outline text="uploadOneFile (f, function () {">
+						<outline text="doNext ();"></outline>
+						<outline text="});"></outline>
+						</outline>
+					<outline text="}"></outline>
+					</outline>
+				<outline text="else {">
+					<outline text="if (callback !== undefined) {">
+						<outline text="callback ();"></outline>
+						<outline text="}"></outline>
+						</outline>
+					<outline text="}"></outline>
+					</outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="doNext ();"></outline>
+			<outline text="}"></outline>
+			</outline>
+		<outline text="function checkFileQueue () {">
+			<outline text="if (!flFileQueueBusy) {">
+				<outline text="flFileQueueBusy = true;"></outline>
+				<outline text="emptyFileQueue (function () {">
+					<outline text="flFileQueueBusy = false;"></outline>
+					<outline text="});"></outline>
+					</outline>
+				<outline text="}"></outline>
+				</outline>
+			<outline text="}"></outline>
+			</outline>
 		<outline text=""></outline>
 		<outline text="function skipFile (f) {">
 			<outline text="if (config.namesToSkip !== undefined) {">
@@ -70,7 +121,7 @@
 			<outline text="fs.readFile (f, function (err, data) {">
 				<outline text="if (!err) {">
 					<outline text="var path = config.s3path + utils.stringDelete (f, 1, config.folder.length);"></outline>
-					<outline text="console.log (&quot;uploadOneFile: path == &quot; + path);"></outline>
+					<outline text="console.log (&quot;uploadOneFile: &quot; + path);"></outline>
 					<outline text="s3.newObject (path, data, getMimeType (path), &quot;private&quot;, function () {">
 						<outline text="item.ctWrites++;"></outline>
 						<outline text="item.whenLastWrite = whenStart;"></outline>
@@ -119,7 +170,8 @@
 						<outline text="var item = stats.theFiles [getFileItemName (f)];"></outline>
 						<outline text="item.whenModified = whenModified; "></outline>
 						<outline text="flStatsDirty = true;"></outline>
-						<outline text="uploadOneFile (f);"></outline>
+						<outline isComment="true" text="uploadOneFile (f);"></outline>
+						<outline text="addFileToQueue (f);"></outline>
 						<outline text="}"></outline>
 						</outline>
 					<outline text="}"></outline>
@@ -156,6 +208,10 @@
 						<outline text="stats.ctScans = 0;"></outline>
 						<outline text="}"></outline>
 						</outline>
+					<outline text="if (stats.fileQueue === undefined) {">
+						<outline text="stats.fileQueue = [];"></outline>
+						<outline text="}"></outline>
+						</outline>
 					<outline text="}"></outline>
 					</outline>
 				<outline text="if (callback !== undefined) {">
@@ -190,7 +246,7 @@
 			</outline>
 		<outline text="function everyMinute () {">
 			<outline text="var now = new Date ();"></outline>
-			<outline text="console.log (&quot;\neveryMinute: &quot; + now.toLocaleTimeString () + &quot;, v&quot; + myVersion + &quot;\n&quot;);"></outline>
+			<outline text="console.log (&quot;\neveryMinute: &quot; + now.toLocaleTimeString () + &quot;, v&quot; + myVersion + &quot;, &quot; + stats.fileQueue.length + &quot; files in queue.\n&quot;);"></outline>
 			<outline text="}"></outline>
 			</outline>
 		<outline text="function everySecond () {">
@@ -201,6 +257,7 @@
 				<outline text="flStatsDirty = false;"></outline>
 				<outline text="}"></outline>
 				</outline>
+			<outline text="checkFileQueue ();"></outline>
 			<outline text="}"></outline>
 			</outline>
 		<outline text="function startup () {">

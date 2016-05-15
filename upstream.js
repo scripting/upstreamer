@@ -1,4 +1,4 @@
-var myVersion = "0.40g", myProductName = "upstream"; 
+var myVersion = "0.40i", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -18,10 +18,48 @@ var stats = {
 	ctScans: 0,
 	ctSecsLastScan: 0,
 	whenLastSave: new Date (0),
+	fileQueue: [],
 	theFiles: {
 		}
 	};
 var fnameStats = "stats.json", flStatsDirty = false;
+var flFileQueueBusy = false;
+
+function addFileToQueue (f) {
+	for (var i = 0; i < stats.fileQueue.length; i++) { //see if it's already on the queue
+		if (stats.fileQueue [i].f == f) {
+			return;
+			}
+		}
+	stats.fileQueue [stats.fileQueue.length] = {
+		f: f
+		}
+	}
+function emptyFileQueue (callback) {
+	function doNext () {
+		if (stats.fileQueue.length > 0) {
+			var f = stats.fileQueue [0].f;
+			stats.fileQueue.splice (0, 1); //remove first item
+			uploadOneFile (f, function () {
+				doNext ();
+				});
+			}
+		else {
+			if (callback !== undefined) {
+				callback ();
+				}
+			}
+		}
+	doNext ();
+	}
+function checkFileQueue () {
+	if (!flFileQueueBusy) {
+		flFileQueueBusy = true;
+		emptyFileQueue (function () {
+			flFileQueueBusy = false;
+			});
+		}
+	}
 
 function skipFile (f) {
 	if (config.namesToSkip !== undefined) {
@@ -48,7 +86,7 @@ function uploadOneFile (f, callback) {
 	fs.readFile (f, function (err, data) {
 		if (!err) {
 			var path = config.s3path + utils.stringDelete (f, 1, config.folder.length);
-			console.log ("uploadOneFile: path == " + path);
+			console.log ("uploadOneFile: " + path);
 			s3.newObject (path, data, getMimeType (path), "private", function () {
 				item.ctWrites++;
 				item.whenLastWrite = whenStart;
@@ -87,7 +125,7 @@ function watchFolder () {
 				var item = stats.theFiles [getFileItemName (f)];
 				item.whenModified = whenModified; 
 				flStatsDirty = true;
-				uploadOneFile (f);
+				addFileToQueue (f);
 				}
 			}
 		}
@@ -113,6 +151,9 @@ function loadStats (callback) {
 			if (stats.ctScans === undefined) {
 				stats.ctScans = 0;
 				}
+			if (stats.fileQueue === undefined) {
+				stats.fileQueue = [];
+				}
 			}
 		if (callback !== undefined) {
 			callback ();
@@ -137,7 +178,7 @@ function loadConfig (callback) {
 	}
 function everyMinute () {
 	var now = new Date ();
-	console.log ("\neveryMinute: " + now.toLocaleTimeString () + ", v" + myVersion + "\n");
+	console.log ("\neveryMinute: " + now.toLocaleTimeString () + ", v" + myVersion + ", " + stats.fileQueue.length + " files in queue.\n");
 	}
 function everySecond () {
 	if (flStatsDirty) {
@@ -146,6 +187,7 @@ function everySecond () {
 		fs.writeFile (fnameStats, utils.jsonStringify (stats));
 		flStatsDirty = false;
 		}
+	checkFileQueue ();
 	}
 function startup () {
 	console.log ("\n" + myProductName + " v" + myVersion + "\n");

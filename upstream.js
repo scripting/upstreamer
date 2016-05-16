@@ -1,4 +1,4 @@
-var myVersion = "0.40m", myProductName = "upstream"; 
+var myVersion = "0.41a", myProductName = "upstream"; 
 
 var fs = require ("fs");
 var mime = require ("mime"); 
@@ -24,6 +24,9 @@ var stats = {
 	};
 var fnameStats = "stats.json", flStatsDirty = false;
 var flFileQueueBusy = false;
+var whenLastUpload = undefined;
+var maxSecsWait = 60; //if it's been this many secs since a file upload, the queue isn't busy
+
 
 function addFileToQueue (f) {
 	for (var i = 0; i < stats.fileQueue.length; i++) { //see if it's already on the queue
@@ -40,6 +43,7 @@ function emptyFileQueue (callback) {
 		if (stats.fileQueue.length > 0) {
 			var f = stats.fileQueue [0].f;
 			stats.fileQueue.splice (0, 1); //remove first item
+			whenLastUpload = new Date (); //5/16/16 by DW
 			uploadOneFile (f, function () {
 				doNext ();
 				});
@@ -53,6 +57,9 @@ function emptyFileQueue (callback) {
 	doNext ();
 	}
 function checkFileQueue () {
+	if (utils.secondsSince (whenLastUpload) > maxSecsWait) { //5/16/16 by DW
+		flFileQueueBusy = false;
+		}
 	if (!flFileQueueBusy) {
 		flFileQueueBusy = true;
 		emptyFileQueue (function () {
